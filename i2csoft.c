@@ -129,18 +129,3 @@ uint8_t SoftI2CReadByte(uint8_t ack)
 	
 	return data;	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
