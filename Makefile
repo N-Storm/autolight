@@ -12,9 +12,9 @@ OBJECTS    = autolight.o i2csoft.o
 
 # Tune the lines below only if you know what you are doing:
 
-CC=avr-gcc
-SIZE=avr-size
-CFLAGS=-Os -std=gnu11 -flto -Wall
+CC = avr-gcc
+SIZE = avr-size
+CFLAGS = -Os -std=gnu11 -flto -Wall
 AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE)
 COMPILE = $(CC) $(CFLAGS) -DF_CPU=$(F_CPU) -mmcu=$(DEVICE)
 
@@ -40,7 +40,7 @@ flash:	all
 install: flash
 
 clean:
-	rm -f autolight.hex autolight.elf $(OBJECTS)
+	rm -f autolight.hex autolight.elf autolight.lss $(OBJECTS)
 
 # file targets:
 autolight.elf: $(OBJECTS)
@@ -55,10 +55,13 @@ autolight.hex: autolight.elf
 
 # Targets for code debugging and analysis:
 disasm:	autolight.elf
-	avr-objdump -d autolight.elf
+	avr-objdump -d -h -S autolight.elf > autolight.lss
 
 cpp:
 	$(COMPILE) -E autolight.c
+
+debug: CFLAGS = -DDEBUG -Og -g -std=gnu11 -Wall
+debug: clean autolight.hex disasm
 
 oldstyle:
 	$(COMPILE) autolight.c i2csoft.c -o autolight.elf
