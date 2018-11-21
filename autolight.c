@@ -131,11 +131,11 @@ bool apds_init() {
 	if (!apds_readbyte(APDS_ID, &id))
 		return false;
 	if (id != APDS_ID_VAL)
-		return false;	
+		return false;
 	
 	apds_writebyte(APDS_ATIME, 0xFF);
 	apds_writebyte(APDS_PTIME, 0xFF);
-	apds_writebyte(APDS_WTIME,	WTIME_DEFAULT);
+	apds_writebyte(APDS_WTIME, WTIME_DEFAULT);
 	apds_writebyte(APDS_PPULSE, PPULSE_DEFAULT);
 	apds_writebyte(APDS_CONTROL, PDRIVE | PDIODE | PGAIN | AGAIN);
 	apds_writebyte(APDS_PILTL, (uint8_t)PROX_TH);
@@ -152,12 +152,12 @@ void reset() {
 	while (1);
 }
 
-int main(void) {	
+int main(void) {
 	init();
 	SoftI2CInit();
 	
 	if (!apds_init())
-		reset();	
+		reset();
 	runstate = RS_SLEEP;
 
 	while (1)
@@ -200,6 +200,6 @@ int main(void) {
 			if (!apds_writebyte(APDS_ENABLE, PIEN | WEN | PEN | PON))
 				reset();
 			runstate = RS_SLEEP;
-		}		
+		}
 	}
 }
