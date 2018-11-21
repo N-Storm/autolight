@@ -10,17 +10,19 @@
 #ifndef AUTOLIGHT_H_
 #define AUTOLIGHT_H_
 
-// Settings
+// Settings. PS = proximity sensor, AL = ambient light.
 // Wait time 202 ms
 #define WTIME_DEFAULT 0xB6
 // PS Pulse count
 #define PPULSE_DEFAULT 4
 // Trigger interrupt/closed state when proximity value over PROX_TH
 #define PROX_TH 30
-// PPERS = 3 consecutive proximity values out of range
+// PPERS = 3 consecutive PS values out of range
 #define PERS_CON 0b00110000
-// Set light on if CH0-CH1*2 less than that value
+// Set light on if CH0-CH1*2 less than that value (integer math approximation)
 #define LIGHT_MAX 40
+// Delay after waking from sleep (on interrupt) before measuring AL level
+#define ON_DELAY 600
 
 // Addresses and registers
 #define APDS_ADDR 0x39

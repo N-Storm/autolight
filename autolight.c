@@ -172,7 +172,7 @@ int main(void) {
 			if (!apds_writebyte(APDS_ENABLE, AEN | PON))
 				reset();
 			QNOP();
-			_delay_ms(600);
+			_delay_ms(ON_DELAY);
 			if (!apds_readal())
 				reset();
 			if (!apds_writebyte(APDS_ENABLE, WEN | PEN | PON))
