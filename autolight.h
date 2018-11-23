@@ -11,21 +11,25 @@
 #define AUTOLIGHT_H_
 
 // Settings. PS = proximity sensor, AL = ambient light.
+// Trigger interrupt/closed state when proximity value crosses PROX_TH
+#define PROX_TH 30
+// Set light on if CH0-CH1*2 less than that value (integer math approximation)
+#define LIGHT_MAX 300
 // Wait time 202 ms
 #define WTIME_DEFAULT 0xB6
 // PS Pulse count
 #define PPULSE_DEFAULT 4
-// Trigger interrupt/closed state when proximity value over PROX_TH
-#define PROX_TH 30
 // PPERS = 3 consecutive PS values out of range
 #define PERS_CON 0b00110000
-// Set light on if CH0-CH1*2 less than that value (integer math approximation)
-#define LIGHT_MAX 40
 // Delay after waking from sleep (on interrupt) before measuring AL level
 #define ON_DELAY 600
+// ALS Timing recommended ~50ms value, 19 cyc, 51.87ms
+#define ATIME_DEFAULT 0xED
+// PS Timing, recommended to be set to 0xFF (1 cyc, 10 bits)
+#define PTIME_DEFAULT 0xFF
 
-// Addresses and registers
-#define APDS_ADDR 0x39
+// Addresses and registers. 7-bit address value shifted left to MSB.
+#define APDS_ADDR (0x39 << 1)
 
 #define APDS_ENABLE 0x00
 #define APDS_ATIME 0x01
@@ -41,6 +45,10 @@
 #define APDS_CONTROL 0x0F
 #define APDS_ID 0x12
 #define APDS_ALS 0x14
+#define APDS_Ch0DATAL 0x14
+#define APDS_Ch0DATAH 0x15
+#define APDS_Ch1DATAL 0x16
+#define APDS_Ch1DATAH 0x17
 #define APDS_PROX 0x18
 #define APDS_PDATAL 0x18
 #define APDS_PDATAH 0x19
@@ -57,11 +65,11 @@
 #define PON (1<<0) // Enable Power On
 
 // Control register flags
-#define PDRIVE 0 //100mA of LED Power
-// #define PDRIVE 0x80 //25mA of LED Power
+// #define PDRIVE 0 // 100mA of LED Power
+#define PDRIVE 0x80 // 25mA of LED Power
 #define PDIODE 0x20 // CH1 Diode
-#define PGAIN 0 //1x Prox gain
-#define AGAIN 0 //1x ALS gain
+#define PGAIN 0 // 1x Prox gain
+#define AGAIN 0x01 // 8x ALS gain
 
 #define REPEATED_BYTE           0x80
 #define AUTO_INCREMENT          0xA0

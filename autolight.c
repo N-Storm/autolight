@@ -50,8 +50,8 @@ void init() {
 
 bool apds_readstart(uint8_t reg) {
 	SoftI2CStart();
-	// Send device addr + write
-	if (!SoftI2CWriteByte(APDS_ADDR+1)) {
+	// Send device addr for write
+	if (!SoftI2CWriteByte(APDS_ADDR)) {
 		SoftI2CStop();
 		//I2C i/o error
 		return false;
@@ -62,8 +62,8 @@ bool apds_readstart(uint8_t reg) {
 		return false;
 	}
 	SoftI2CStart(); // Repeated start
-	// Send device addr + read
-	if (!SoftI2CWriteByte(APDS_ADDR)) {
+	// Send device addr + read flag
+	if (!SoftI2CWriteByte(APDS_ADDR | 1)) {
 		SoftI2CStop();
 		return false;
 	}
@@ -82,7 +82,7 @@ bool apds_readbyte(uint8_t reg, uint8_t *val) {
 
 bool apds_writebyte(uint8_t reg, uint8_t val) {
 	SoftI2CStart();
-	if (!SoftI2CWriteByte(APDS_ADDR+1)) {
+	if (!SoftI2CWriteByte(APDS_ADDR)) {
 		SoftI2CStop();
 		//I2C i/o error
 		return false;
@@ -94,47 +94,69 @@ bool apds_writebyte(uint8_t reg, uint8_t val) {
 	return true;
 }
 
+/* Read AL data to al global var.
+ * For some reason APDS-9930 auto increment reading of values won't work for me. 
+ * So we read one byte at once only.
+*/
 bool apds_readal() {
 	uint16_t ch0, ch1;
 	
-	if (!apds_readstart(APDS_ALS))
+	if (!apds_readstart(APDS_Ch0DATAL))
 		return false;
+	ch0 = SoftI2CReadByte(0);
 
-	ch0 = SoftI2CReadByte(1);
-	ch0 += SoftI2CReadByte(1) << 8;
-	ch1 = SoftI2CReadByte(1);
-	ch1 += SoftI2CReadByte(0) << 8;
-	SoftI2CStop();
-	if (!ch0 || !ch1)
+	if (!apds_readstart(APDS_Ch0DATAH))
 		return false;
-	else
+	ch0 += SoftI2CReadByte(0) << 8;
+
+	if (!apds_readstart(APDS_Ch1DATAL))
+		return false;
+	ch1 = SoftI2CReadByte(0);
+
+	if (!apds_readstart(APDS_Ch1DATAH))
+		return false;
+	ch1 += SoftI2CReadByte(0) << 8;
+
+	SoftI2CStop();
+	if (ch0 < (ch1*2)) {
+		if (ch0 > LIGHT_MAX*2)
+			al = ch0; // IR overflow
+		else
+			al = 0;
+	} else
 		al = ch0 - (ch1*2);
 
 	return true;
 }
 
+/* Read PS data to prox global var.
+ * For some reason APDS-9930 auto increment reading of values won't work for me. 
+ * So we read one byte at once only.
+*/
 bool apds_readprox() {
-	if (!apds_readstart(APDS_PROX))
-	return false;
+	if (!apds_readstart(APDS_PDATAL))
+		return false;
+	prox = SoftI2CReadByte(0);
 
-	prox = SoftI2CReadByte(1);
+	if (!apds_readstart(APDS_PDATAH))
+		return false;
 	prox += SoftI2CReadByte(0) << 8;
-	SoftI2CStop();
 
+	SoftI2CStop();
 	return true;
 }
 
 bool apds_init() {
 	uint8_t id = 0;
-	
+
 	// Read & check sensor ID
 	if (!apds_readbyte(APDS_ID, &id))
 		return false;
 	if (id != APDS_ID_VAL)
 		return false;
-	
-	apds_writebyte(APDS_ATIME, 0xFF);
-	apds_writebyte(APDS_PTIME, 0xFF);
+
+	apds_writebyte(APDS_ATIME, ATIME_DEFAULT);
+	apds_writebyte(APDS_PTIME, PTIME_DEFAULT);
 	apds_writebyte(APDS_WTIME, WTIME_DEFAULT);
 	apds_writebyte(APDS_PPULSE, PPULSE_DEFAULT);
 	apds_writebyte(APDS_CONTROL, PDRIVE | PDIODE | PGAIN | AGAIN);
@@ -142,7 +164,7 @@ bool apds_init() {
 	apds_writebyte(APDS_PILTH, PROX_TH >> 8);
 	apds_writebyte(APDS_PERS, PERS_CON);
 	apds_writebyte(APDS_ENABLE, PIEN | WEN | PEN | PON);
-		
+
 	return true;
 }
 
