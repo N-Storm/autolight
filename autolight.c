@@ -18,7 +18,7 @@
 #include "i2csoft.h"
 #include "autolight.h"
 
-uint8_t runstate = RS_START;
+volatile uint8_t runstate = RS_START;
 uint16_t al, prox;
 
 ISR(INT0_vect) {
