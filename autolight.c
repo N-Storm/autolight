@@ -171,6 +171,7 @@ bool apds_init() {
 // Reset via WDT on error
 void reset() {
 	wdt_enable(WDTO_15MS);
+	cli();
 	while (1);
 }
 
@@ -185,6 +186,8 @@ int main(void) {
 	while (1)
 	{
 		if (runstate == RS_SLEEP) {
+			apds_writebyte(APDS_RESET_PROX_INT, 0); // Clear PS Interrupt
+
 			sleep_enable();
 			sei();
 			sleep_cpu();

@@ -31,27 +31,27 @@
 // Addresses and registers. 7-bit address value shifted left to MSB.
 #define APDS_ADDR (0x39 << 1)
 
-#define APDS_ENABLE 0x00
-#define APDS_ATIME 0x01
-#define APDS_PTIME 0x02
-#define APDS_WTIME 0x03
-#define APDS_PILTL 0x08
-#define APDS_PILTH 0x09
-#define APDS_PIHTL 0x0A
-#define APDS_PIHTH 0x0B
-#define APDS_PERS 0x0C
-#define APDS_CONFIG 0x0D
-#define APDS_PPULSE 0x0E
-#define APDS_CONTROL 0x0F
-#define APDS_ID 0x12
-#define APDS_ALS 0x14
+#define APDS_ENABLE   0x00
+#define APDS_ATIME    0x01
+#define APDS_PTIME    0x02
+#define APDS_WTIME    0x03
+#define APDS_PILTL    0x08
+#define APDS_PILTH    0x09
+#define APDS_PIHTL    0x0A
+#define APDS_PIHTH    0x0B
+#define APDS_PERS     0x0C
+#define APDS_CONFIG   0x0D
+#define APDS_PPULSE   0x0E
+#define APDS_CONTROL  0x0F
+#define APDS_ID       0x12
+#define APDS_ALS      0x14
 #define APDS_Ch0DATAL 0x14
 #define APDS_Ch0DATAH 0x15
 #define APDS_Ch1DATAL 0x16
 #define APDS_Ch1DATAH 0x17
-#define APDS_PROX 0x18
-#define APDS_PDATAL 0x18
-#define APDS_PDATAH 0x19
+#define APDS_PROX     0x18
+#define APDS_PDATAL   0x18
+#define APDS_PDATAH   0x19
 
 #define APDS_ID_VAL 0x39
 
@@ -68,20 +68,22 @@
 // #define PDRIVE 0 // 100mA of LED Power
 #define PDRIVE 0x80 // 25mA of LED Power
 #define PDIODE 0x20 // CH1 Diode
-#define PGAIN 0 // 1x Prox gain
-#define AGAIN 0x01 // 8x ALS gain
+#define PGAIN  0x00 // 1x Prox gain
+#define AGAIN  0x01 // 8x ALS gain
 
+// Command register flags
+#define APDS_RESET_PROX_INT     0b11100101
 #define REPEATED_BYTE           0x80
 #define AUTO_INCREMENT          0xA0
 #define SPECIAL_FN              0xE0
 
 // States
-#define RS_START 0
-#define RS_SLEEP 1
-#define RS_WAKE 2
-#define RS_LOWLIGHT 3
-#define RS_HIGHLIGHT 4
-#define RS_CLOSED 5
+#define RS_START      0
+#define RS_SLEEP      1
+#define RS_WAKE       2
+#define RS_LOWLIGHT   3
+#define RS_HIGHLIGHT  4
+#define RS_CLOSED     5
 
 // Utility macros
 #define DNOP() _NOP(); _NOP();
