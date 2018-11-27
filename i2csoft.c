@@ -12,12 +12,13 @@ www.eXtremeElectronics.co.in
 
 #include "i2csoft.h"
 
-// #define Q_DEL _delay_loop_2(3)
-// #define H_DEL _delay_loop_2(5)
-//#define Q_DEL _delay_us(2)
-//#define H_DEL _delay_us(2)
+// We use just "nop" here because we are running MCU @ 250kHz only
 #define Q_DEL asm("nop")
 #define H_DEL asm("nop")
+// #define Q_DEL _delay_loop_2(3)
+// #define H_DEL _delay_loop_2(5)
+// #define Q_DEL _delay_us(2)
+// #define H_DEL _delay_us(2)
 
 void SoftI2CInit()
 {

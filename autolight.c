@@ -27,6 +27,7 @@ ISR(INT0_vect) {
 }
 
 void init() {
+	wdt_disable();
 	cli(); // Disable interrupts
 	CCP = 0xD8; // Magic number to enable configuration access
 	CLKMSR = 0b00; // Internal osc
@@ -34,7 +35,6 @@ void init() {
 	CCP = 0xD8;
 	CLKPSR = 0b0101; // Prescaler 1:32 = 250 kHz system clock
 	// CLKPSR = 0; // Prescaler 1:1 = 8 MHz system clock
-	wdt_disable();
 	ACSR |= (1 << 7); // ACD (ACD: Analog Comparator Disable = 1)
 	PRR = 0b11; // Power Reduction Register
 	sei(); // Enable interrupts
