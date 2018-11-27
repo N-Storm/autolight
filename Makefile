@@ -1,6 +1,7 @@
 # Project: autolight
 # Author: NStorm
 # License: CC-BY-SA-3.0 https://creativecommons.org/licenses/by-sa/3.0/
+# https://github.com/N-Storm/autolight
 
 DEVICE     = attiny10
 F_CPU      = 250000
