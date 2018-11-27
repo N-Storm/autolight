@@ -42,7 +42,7 @@ void init() {
 
 	// PCICR = (1 << PCIE0); // Enable port change interrupt
 	// PCMSK = (1 << PCINT0) | (1 << PCINT1); // Enable interrupt on PB0, PB1 change
-	EICRA |= (1 << ISC00) | (1 << ISC01); // The rising edge of INT0 generates an interrupt request.
+	EICRA |= (1 << ISC01) | (0 << ISC00); // The falling edge of INT0 generates an interrupt request.
 	EIMSK |= (1 << INT0); // Enable INT0
 
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN);
