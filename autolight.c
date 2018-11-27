@@ -4,6 +4,7 @@
  * Project: autolight
  * Author: NStorm
  * License: Apache License Version 2.0, January 2004 http://www.apache.org/licenses/
+ * https://github.com/N-Storm/autolight
  */
 
 #include <avr/io.h>

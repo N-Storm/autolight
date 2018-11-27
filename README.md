@@ -1,6 +1,8 @@
 # Auto light
 Attiny10 &amp; APDS-9930 based automatic light/switch
 
+https://github.com/N-Storm/autolight
+
 **Work in progress!**
 
 This project utilizes small attiny10 mcu to work with APDS-9930 ambient light (AL) and proximity I2C sensor.
