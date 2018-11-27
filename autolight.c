@@ -22,6 +22,7 @@ volatile uint8_t runstate = RS_START;
 uint16_t al, prox;
 
 ISR(INT0_vect) {
+	sleep_disable();
 	runstate = RS_WAKE;
 }
 
@@ -130,7 +131,7 @@ bool apds_readal() {
 }
 
 /* Read PS data to prox global var.
- * For some reason APDS-9930 auto increment reading of values won't work for me. 
+ * For some reason APDS-9930 auto increment reading of values won't work for me.
  * So we read one byte at once only.
 */
 bool apds_readprox() {
@@ -162,6 +163,9 @@ bool apds_init() {
 	apds_writebyte(APDS_CONTROL, PDRIVE | PDIODE | PGAIN | AGAIN);
 	apds_writebyte(APDS_PILTL, (uint8_t)PROX_TH);
 	apds_writebyte(APDS_PILTH, PROX_TH >> 8);
+	apds_writebyte(APDS_PIHTL, 0); // Write zero to disable high threshold
+	apds_writebyte(APDS_PIHTH, 0);
+	apds_writebyte(APDS_CONFIG, 0); // Reset to default
 	apds_writebyte(APDS_PERS, PERS_CON);
 	apds_writebyte(APDS_ENABLE, PIEN | WEN | PEN | PON);
 
@@ -222,6 +226,7 @@ int main(void) {
 		}
 		if (runstate == RS_CLOSED) {
 			PORTB &= ~(1 << PB3);
+			cli();
 			if (!apds_writebyte(APDS_ENABLE, PIEN | WEN | PEN | PON))
 				reset();
 			runstate = RS_SLEEP;

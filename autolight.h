@@ -14,7 +14,7 @@
 // Trigger interrupt/closed state when proximity value crosses PROX_TH
 #define PROX_TH 30
 // Set light on if CH0-CH1*2 less than that value (integer math approximation)
-#define LIGHT_MAX 300
+#define LIGHT_MAX 100
 // Wait time 202 ms
 #define WTIME_DEFAULT 0xB6
 // PS Pulse count
