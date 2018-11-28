@@ -49,7 +49,7 @@ void init() {
 
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN);
 }
-
+// This function will send required "heading" before reading bytes from I2C
 bool apds_readstart(uint8_t reg) {
 	SoftI2CStart();
 	// Send device addr for write
@@ -99,7 +99,7 @@ bool apds_writebyte(uint8_t reg, uint8_t val) {
 /* Read AL data to al global var.
  * For some reason APDS-9930 auto increment reading of values won't work for me. 
  * So we read one byte at once only.
-*/
+ */
 bool apds_readal() {
 	uint16_t ch0, ch1;
 	
@@ -120,8 +120,9 @@ bool apds_readal() {
 	ch1 += SoftI2CReadByte(0) << 8;
 
 	SoftI2CStop();
+
 	if (ch0 < (ch1*2)) {
-		if (ch0 > LIGHT_MAX*2)
+		if (ch0 > LIGHT_TH*2)
 			al = ch0; // IR overflow
 		else
 			al = 0;
@@ -134,7 +135,7 @@ bool apds_readal() {
 /* Read PS data to prox global var.
  * For some reason APDS-9930 auto increment reading of values won't work for me.
  * So we read one byte at once only.
-*/
+ */
 bool apds_readprox() {
 	if (!apds_readstart(APDS_PDATAL))
 		return false;
@@ -201,11 +202,11 @@ int main(void) {
 		if (runstate == RS_WAKE) {
 			if (!apds_writebyte(APDS_ENABLE, AEN | PON))
 				reset();
-			QNOP();
-			_delay_ms(ON_DELAY);
+			_delay_ms(DELAY);
+
 			if (!apds_readal())
 				reset();
-			if (al < LIGHT_MAX)
+			if (al < LIGHT_TH)
 				runstate = RS_LOWLIGHT;
 			else
 				runstate = RS_HIGHLIGHT;
@@ -213,7 +214,7 @@ int main(void) {
 		if (runstate == RS_LOWLIGHT || runstate == RS_HIGHLIGHT) {
 			if (runstate == RS_LOWLIGHT)
 				PORTB |= (1 << PB3); // Turn lights on
-			#ifdef RE_LIGHT
+			#ifdef RECHECK_AL
 				if (!apds_writebyte(APDS_ENABLE, WEN | PEN | AEN | PON))
 					reset();
 			#else // not defined RE_LIGHT
@@ -221,17 +222,17 @@ int main(void) {
 					reset();
 			#endif // RE_LIGHT
 
-			_delay_ms(ON_DELAY);
+			_delay_ms(DELAY);
 
 			if (!apds_readprox())
 				reset();
 			if (prox > PROX_TH)
 				runstate = RS_CLOSED;
-			#ifdef RE_LIGHT
+			#ifdef RECHECK_AL
 				else {
 					if (!apds_readal())
 						reset();
-					if (al < LIGHT_MAX)
+					if (al < LIGHT_TH)
 						runstate = RS_LOWLIGHT;
 					else
 						runstate = RS_HIGHLIGHT;
@@ -239,7 +240,7 @@ int main(void) {
 			#endif // RE_LIGHT
 		}
 		if (runstate == RS_CLOSED) {
-			PORTB &= ~(1 << PB3);
+			PORTB &= ~(1 << PB3); // Turn lights off
 			cli();
 			if (!apds_writebyte(APDS_ENABLE, PIEN | WEN | PEN | PON))
 				reset();

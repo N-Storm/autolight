@@ -7,30 +7,32 @@
  * https://github.com/N-Storm/autolight
  */
 
-
 #ifndef AUTOLIGHT_H_
 #define AUTOLIGHT_H_
-
 
 // Settings. PS = proximity sensor, AL = ambient light.
 // Trigger interrupt/closed state when proximity value crosses PROX_TH
 #define PROX_TH 30
 // Set light on if CH0-CH1*2 less than that value (integer math approximation)
-#define LIGHT_MAX 100
+#define LIGHT_TH 100
+// Delay in ms between measuring AL/PS during working state
+#define DELAY 600
+/* Uncomment line below to enable AL level reevaluating during working state.
+ * Enabling this will allow light to turn on/off due to the changes in AL level.
+ */
+// #define RECHECK_AL
+
+// Expert settings below. It's recommended to leave defaults.
 // Wait time 202 ms
 #define WTIME_DEFAULT 0xB6
 // PS Pulse count
 #define PPULSE_DEFAULT 4
 // PPERS = 3 consecutive PS values out of range
 #define PERS_CON 0b00110000
-// Delay after waking from sleep (on interrupt) before measuring AL level
-#define ON_DELAY 600
 // ALS Timing recommended ~50ms value, 19 cyc, 51.87ms
 #define ATIME_DEFAULT 0xED
 // PS Timing, recommended to be set to 0xFF (1 cyc, 10 bits)
 #define PTIME_DEFAULT 0xFF
-// Uncomment line below to enable AL level re-checking during working state
-#define RE_LIGHT
 
 // Addresses and registers. 7-bit address value shifted left to MSB.
 #define APDS_ADDR (0x39 << 1)
@@ -60,13 +62,13 @@
 #define APDS_ID_VAL 0x39
 
 // Enable register flags
-#define SAI (1<<6) // Sleep after interrupt. When asserted, the device will power down at the end of a proximity or ALS cycle if an interrupt has been generated.
+#define SAI  (1<<6) // Sleep after interrupt. When asserted, the device will power down at the end of a proximity or ALS cycle if an interrupt has been generated.
 #define PIEN (1<<5) // Proximity Interrupt Mask. When asserted, permits proximity interrupts to be generated.
 #define AIEN (1<<4) // ALS Interrupt Mask. When asserted, permits ALS interrupt to be generated.
-#define WEN (1<<3) // Enable Wait
-#define PEN (1<<2) // Enable Prox
-#define AEN (1<<1) // Enable ALS
-#define PON (1<<0) // Enable Power On
+#define WEN  (1<<3) // Enable Wait
+#define PEN  (1<<2) // Enable Prox
+#define AEN  (1<<1) // Enable ALS
+#define PON  (1<<0) // Enable Power On
 
 // Control register flags
 // #define PDRIVE 0 // 100mA of LED Power
