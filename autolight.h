@@ -11,6 +11,7 @@
 #ifndef AUTOLIGHT_H_
 #define AUTOLIGHT_H_
 
+
 // Settings. PS = proximity sensor, AL = ambient light.
 // Trigger interrupt/closed state when proximity value crosses PROX_TH
 #define PROX_TH 30
@@ -28,6 +29,8 @@
 #define ATIME_DEFAULT 0xED
 // PS Timing, recommended to be set to 0xFF (1 cyc, 10 bits)
 #define PTIME_DEFAULT 0xFF
+// Uncomment line below to enable AL level re-checking during working state
+#define RE_LIGHT
 
 // Addresses and registers. 7-bit address value shifted left to MSB.
 #define APDS_ADDR (0x39 << 1)

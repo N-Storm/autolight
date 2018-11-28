@@ -205,25 +205,38 @@ int main(void) {
 			_delay_ms(ON_DELAY);
 			if (!apds_readal())
 				reset();
-			if (!apds_writebyte(APDS_ENABLE, WEN | PEN | PON))
-				reset();
 			if (al < LIGHT_MAX)
 				runstate = RS_LOWLIGHT;
 			else
 				runstate = RS_HIGHLIGHT;
 		}
-		if (runstate == RS_LOWLIGHT) {
-			PORTB |= (1 << PB3); // Turn lights on
+		if (runstate == RS_LOWLIGHT || runstate == RS_HIGHLIGHT) {
+			if (runstate == RS_LOWLIGHT)
+				PORTB |= (1 << PB3); // Turn lights on
+			#ifdef RE_LIGHT
+				if (!apds_writebyte(APDS_ENABLE, WEN | PEN | AEN | PON))
+					reset();
+			#else // not defined RE_LIGHT
+				if (!apds_writebyte(APDS_ENABLE, WEN | PEN | PON))
+					reset();
+			#endif // RE_LIGHT
+
+			_delay_ms(ON_DELAY);
+
 			if (!apds_readprox())
 				reset();
 			if (prox > PROX_TH)
 				runstate = RS_CLOSED;
-		}
-		if (runstate == RS_HIGHLIGHT) {
-			if (!apds_readprox())
-				reset();
-			if (prox > PROX_TH)
-				runstate = RS_CLOSED;
+			#ifdef RE_LIGHT
+				else {
+					if (!apds_readal())
+						reset();
+					if (al < LIGHT_MAX)
+						runstate = RS_LOWLIGHT;
+					else
+						runstate = RS_HIGHLIGHT;
+				}
+			#endif // RE_LIGHT
 		}
 		if (runstate == RS_CLOSED) {
 			PORTB &= ~(1 << PB3);
