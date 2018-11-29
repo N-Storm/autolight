@@ -16,7 +16,7 @@ OBJECTS    = autolight.o i2csoft.o
 CC = avr-gcc
 SIZE = avr-size
 CFLAGS = -Os -std=gnu11 -flto -Wall
-AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE)
+AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE) -v
 COMPILE = $(CC) $(CFLAGS) -DF_CPU=$(F_CPU) -mmcu=$(DEVICE)
 
 # symbolic targets:
@@ -37,6 +37,9 @@ all:	autolight.hex
 
 flash:	all
 	$(AVRDUDE) -U flash:w:autolight.hex:i
+
+fuse:	all flash
+	$(AVRDUDE) -U fuse:w:0xfe:m
 
 install: flash
 
