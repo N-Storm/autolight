@@ -39,6 +39,7 @@ flash:	all
 	$(AVRDUDE) -U flash:w:autolight.hex:i
 
 fuse:	all flash
+	$(AVRDUDE) -x section_config -e
 	$(AVRDUDE) -U fuse:w:0xfe:m
 
 install: flash

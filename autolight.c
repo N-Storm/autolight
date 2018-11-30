@@ -40,7 +40,9 @@ void init() {
 	PRR = 0b11; // Power Reduction Register
 	sei(); // Enable interrupts
 
-	DDRB |= (1 << DDB3); // PB3 - OUTPUT
+	PORTB = 0;
+	PUEB |= 0b0111; // Enable Pull-ups on INPUT pins
+	DDRB |= (1 << DDB3); // PB3 - OUTPUT LOW
 
 	// PCICR = (1 << PCIE0); // Enable port change interrupt
 	// PCMSK = (1 << PCINT0) | (1 << PCINT1); // Enable interrupt on PB0, PB1 change
@@ -213,7 +215,7 @@ int main(void) {
 		}
 		if (runstate == RS_LOWLIGHT || runstate == RS_HIGHLIGHT) {
 			if (runstate == RS_LOWLIGHT)
-				PORTB |= (1 << PB3); // Turn lights on
+				LIGHTON(); // Turn lights on
 			#ifdef RECHECK_AL
 				if (!apds_writebyte(APDS_ENABLE, WEN | PEN | AEN | PON))
 					reset();
@@ -240,7 +242,7 @@ int main(void) {
 			#endif // RE_LIGHT
 		}
 		if (runstate == RS_CLOSED) {
-			PORTB &= ~(1 << PB3); // Turn lights off
+			LIGHTOFF(); // Turn lights off
 			cli();
 			if (!apds_writebyte(APDS_ENABLE, PIEN | WEN | PEN | PON))
 				reset();

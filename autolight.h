@@ -95,4 +95,13 @@
 #define DNOP() _NOP(); _NOP();
 #define QNOP() DNOP(); DNOP();
 
+/* Define 2 macros here to enable/disable output to MOSFET on PB3 with pull-up.
+ * Using additional internal pullup to drive high level instead of only output high due to
+ * PB3 pin has lower drive capability because it's also act as the RESET pin which 
+ * should be able to accept +12V during programming conditions and it will provide only 
+ * ~ +2.7V high output with Vcc at +3.3V. With pull-up enabled we can get ~ +3.2V output.
+ */
+#define LIGHTON()  do { PORTB |= (1 << PB3);   PUEB |= (1 << PUEB3); } while (0);
+#define LIGHTOFF() do { PUEB &= ~(1 << PUEB3); PORTB &= ~(1 << PB3); } while (0);
+
 #endif /* AUTOLIGHT_H_ */
