@@ -41,7 +41,14 @@ void init() {
 	sei(); // Enable interrupts
 
 	PORTB = 0;
-	PUEB |= 0b0111; // Enable Pull-ups on INPUT pins
+
+	// Enable pull-up only on interrupt pin, due to code size limitation we have to use ext pullups in this case.
+	#ifdef RECHECK_AL
+		PUEB = (1 << PUEB2);
+	#else
+		PUEB = 0b0111; // Enable pullups on INPUT pins
+	#endif
+
 	DDRB |= (1 << DDB3); // PB3 - OUTPUT LOW
 
 	// PCICR = (1 << PCIE0); // Enable port change interrupt

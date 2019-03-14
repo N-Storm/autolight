@@ -8,13 +8,14 @@ www.eXtremeElectronics.co.in
 **********************************************************/
 
 #include <avr/io.h>
+#include <avr/cpufunc.h>
 #include <util/delay.h>
 
 #include "i2csoft.h"
 
 // We use just "nop" here because we are running MCU @ 250kHz only
-#define Q_DEL asm("nop")
-#define H_DEL asm("nop")
+#define Q_DEL _NOP();
+#define H_DEL _NOP();
 // #define Q_DEL _delay_loop_2(3)
 // #define H_DEL _delay_loop_2(5)
 // #define Q_DEL _delay_us(2)
@@ -22,11 +23,11 @@ www.eXtremeElectronics.co.in
 
 void SoftI2CInit()
 {
-	SDAPORT&=~(1<<SDA); // Fixed
-	SCLPORT&=~(1<<SCL);
+	SDAPORT &= ~(1 << SDA); // Fixed
+	SCLPORT &= ~(1 << SCL);
 	
 	SOFT_I2C_SDA_HIGH;
-	SOFT_I2C_SCL_HIGH;	
+	SOFT_I2C_SCL_HIGH;
 }
 
 void SoftI2CStart()
@@ -58,9 +59,9 @@ uint8_t SoftI2CWriteByte(uint8_t data)
 		Q_DEL;
 		
 		if(data & 0x80)
-		SOFT_I2C_SDA_HIGH;
+		    SOFT_I2C_SDA_HIGH;
 		else
-		SOFT_I2C_SDA_LOW;
+		    SOFT_I2C_SDA_LOW;
 		
 		H_DEL;
 		
@@ -128,5 +129,5 @@ uint8_t SoftI2CReadByte(uint8_t ack)
 	SOFT_I2C_SCL_LOW;
 	H_DEL;
 	
-	return data;	
+	return data;
 }

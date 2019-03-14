@@ -11,6 +11,8 @@ www.eXtremeElectronics.co.in
 #ifndef _I2CSOFT_H
 #define _I2CSOFT_H
 
+#include "autolight.h"
+
 /* 
 I/O Configuration 
 */
@@ -24,16 +26,25 @@ I/O Configuration
 #define SDAPIN	PINB	//TAKE PORTD TO READ DATA
 #define SCLPIN	PINB	//TAKE PORTD TO READ DATA
 
+#define SDAPUE	PUEB
+#define SCLPUE	PUEB
+
 #define SCL	PINB0	//PORTD.0 PIN AS SCL PIN
 #define SDA	PINB1	//PORTD.1 PIN AS SDA PIN
 
 
-#define SOFT_I2C_SDA_LOW	SDADDR|=((1<<SDA))
-#define SOFT_I2C_SDA_HIGH	SDADDR&=(~(1<<SDA))
-
-#define SOFT_I2C_SCL_LOW	SCLDDR|=((1<<SCL))
-#define SOFT_I2C_SCL_HIGH	SCLDDR&=(~(1<<SCL))
-
+// We have to use external pullups with RECHECK_AL due to code size limits
+#ifdef RECHECK_AL
+	#define SOFT_I2C_SDA_LOW	SDADDR|=((1<<SDA))
+	#define SOFT_I2C_SDA_HIGH	SDADDR&=(~(1<<SDA))
+	#define SOFT_I2C_SCL_LOW	SCLDDR|=((1<<SCL))
+	#define SOFT_I2C_SCL_HIGH	SCLDDR&=(~(1<<SCL))
+#else
+	#define SOFT_I2C_SDA_LOW	do { SDAPUE &= ~(1 << SDA); SDADDR |= (1 << SDA); } while (0) // Turn off pull-up & set port to OUTPUT (sink)
+	#define SOFT_I2C_SDA_HIGH	do { SDADDR &= ~(1 << SDA); SDAPUE |= (1 << SDA); } while (0) // Set port to INPUT & turn on pull-up
+	#define SOFT_I2C_SCL_LOW	do { SCLPUE &= (~1 << SCL); SCLDDR |= (1 << SCL); } while (0)
+	#define SOFT_I2C_SCL_HIGH	do { SCLDDR &= ~(1 << SCL); SCLPUE |= (1 << SCL); } while (0)
+#endif
 
 /**********************************************************
 SoftI2CInit()
