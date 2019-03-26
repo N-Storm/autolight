@@ -1,6 +1,6 @@
 # Project: autolight
 # Author: NStorm
-# License: CC-BY-SA-3.0 https://creativecommons.org/licenses/by-sa/3.0/
+# License: Apache License Version 2.0, January 2004 http://www.apache.org/licenses/
 # https://github.com/N-Storm/autolight
 
 DEVICE     = attiny10
