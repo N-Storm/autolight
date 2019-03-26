@@ -22,6 +22,9 @@
  */
 // #define RECHECK_AL
 
+// Uncomment to enable MCU internal pull-up on INT pin
+// #define INT_PULLUP
+
 // Expert settings below. It's recommended to leave defaults.
 // Wait time 202 ms
 #define WTIME_DEFAULT 0xB6

@@ -42,11 +42,9 @@ void init() {
 
 	PORTB = 0;
 
-	// Enable pull-up only on interrupt pin, due to code size limitation we have to use ext pullups in this case.
-	#ifdef RECHECK_AL
+	// Turn on pull-up on interrupt pin if enabled in config.
+	#ifdef INT_PULLUP
 		PUEB = (1 << PUEB2);
-	#else
-		PUEB = 0b0111; // Enable pullups on INPUT pins
 	#endif
 
 	DDRB |= (1 << DDB3); // PB3 - OUTPUT LOW
