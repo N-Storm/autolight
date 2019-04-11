@@ -28,6 +28,7 @@ ISR(INT0_vect) {
 }
 
 void init() {
+	RSTFLR = 0;
 	wdt_disable();
 	cli(); // Disable interrupts
 	CCP = 0xD8; // Magic number to enable configuration access
