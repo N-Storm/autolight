@@ -56,6 +56,7 @@ void init() {
 
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN);
 }
+
 // This function will send required "heading" before reading bytes from I2C
 bool apds_readstart(uint8_t reg) {
 	SoftI2CStart();
@@ -165,6 +166,7 @@ bool apds_init() {
 	if (id != APDS_ID_VAL)
 		return false;
 
+	apds_writebyte(APDS_RESET_PROX_INT, 0); // Clear PS Interrupt just in case we've restarted
 	apds_writebyte(APDS_ATIME, ATIME_DEFAULT);
 	apds_writebyte(APDS_PTIME, PTIME_DEFAULT);
 	apds_writebyte(APDS_WTIME, WTIME_DEFAULT);
@@ -176,7 +178,7 @@ bool apds_init() {
 	apds_writebyte(APDS_PIHTH, 0);
 	apds_writebyte(APDS_CONFIG, 0); // Reset to default
 	apds_writebyte(APDS_PERS, PERS_CON);
-	apds_writebyte(APDS_ENABLE, PIEN | WEN | PEN | PON);
+	apds_writebyte(APDS_ENABLE, WEN | PEN | PON);
 
 	return true;
 }
@@ -191,7 +193,6 @@ void reset() {
 int main(void) {
 	init();
 	SoftI2CInit();
-	
 	if (!apds_init())
 		reset();
 	runstate = RS_SLEEP;
@@ -200,9 +201,11 @@ int main(void) {
 	{
 		if (runstate == RS_SLEEP) {
 			apds_writebyte(APDS_RESET_PROX_INT, 0); // Clear PS Interrupt
+			sei();
+			if (!apds_writebyte(APDS_ENABLE, PIEN | WEN | PEN | PON))
+				reset();
 
 			sleep_enable();
-			sei();
 			sleep_cpu();
 			sleep_disable();
 		}
@@ -249,8 +252,6 @@ int main(void) {
 		if (runstate == RS_CLOSED) {
 			LIGHTOFF(); // Turn lights off
 			cli();
-			if (!apds_writebyte(APDS_ENABLE, PIEN | WEN | PEN | PON))
-				reset();
 			runstate = RS_SLEEP;
 		}
 	}

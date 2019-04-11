@@ -88,7 +88,7 @@ uint8_t SoftI2CWriteByte(uint8_t data)
 	SOFT_I2C_SCL_LOW;
 	H_DEL;
 	
-	return ack;	
+	return ack;
 }
 
 
@@ -104,10 +104,10 @@ uint8_t SoftI2CReadByte(uint8_t ack)
 		SOFT_I2C_SCL_HIGH;
 		H_DEL;
 		
-		while((SCLPIN & (1<<SCL))==0);
+		while((SCLPIN & (1 << SCL)) == 0);
 		
 		if(SDAPIN &(1<<SDA))
-		data|=(0x80>>i);		
+			data |= (0x80 >> i);
 	}
 	
 	SOFT_I2C_SCL_LOW;
