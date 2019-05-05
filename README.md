@@ -15,8 +15,11 @@ The PB2 port are used as INT0 for sensor interrupts to wake MCU from sleep on pr
 ## Building
 
 Fetch the latest trunk:
+
 `git clone https://github.com/N-Storm/autolight && cd autolight`
+
 Then tweak some settings in autolight.h if required. They are commented. After that do a:
+
 `make && make flash && make fuse`. 
 
 ### :warning: After you do a `make fuse` step, you won’t be able to program MCU again without applying +12V to RESET pin (make sure it’s not connected to your programmer hardware :warning:
