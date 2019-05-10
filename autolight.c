@@ -228,10 +228,10 @@ int main(void) {
 			#ifdef RECHECK_AL
 				if (!apds_writebyte(APDS_ENABLE, WEN | PEN | AEN | PON))
 					reset();
-			#else // not defined RE_LIGHT
+			#else // not defined RECHECK_AL
 				if (!apds_writebyte(APDS_ENABLE, WEN | PEN | PON))
 					reset();
-			#endif // RE_LIGHT
+			#endif // RECHECK_AL
 
 			_delay_ms(DELAY);
 
@@ -248,7 +248,7 @@ int main(void) {
 					else
 						runstate = RS_HIGHLIGHT;
 				}
-			#endif // RE_LIGHT
+			#endif // RECHECK_AL
 		}
 		if (runstate == RS_CLOSED) {
 			LIGHTOFF(); // Turn lights off
