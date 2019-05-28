@@ -3,6 +3,8 @@ Attiny10 &amp; APDS-9930 based automatic light/switch
 
 https://github.com/N-Storm/autolight
 
+https://easyeda.com/NStorm/autolight-board
+
 This project utilizes small ATtiny10 mcu to work with APDS-9930 ambient light (AL) and proximity I2C sensor.
 This is used for automatic "smart" light in a drawer. Once the drawer are open the APDS-9930 will notice proximity change 
 and trigger a preset interrupt and MCU will come from sleep to check if AL level are below set (i.e. it's dark around).
@@ -35,6 +37,10 @@ PB2 ↔ INT<br />
 PB3 are the module digital output, with logic LOW when light should be turned off and HIGH when it should be on. Suited for connecting to an N-channel FET driving the LED light.
 
 Please be aware that the APDS-9930 module requires 2.5 – 3.6 V for it’s operation on Vdd+Vbatt (IR LED power). I recommend to use a 3.3V LDO for powering both MCU & APDS-9930.
+
+Schematics & board are available on EasyEDA: https://easyeda.com/NStorm/autolight-board
+
+### :warning: This board has two places for LDOs - U3 & U4. Solder only one of them! They replace each other. The board are made so they could replace each other. Alternatively edit board/schematics to replace them with your favorite LDO. :warning:
 
 This project utilizes software I2C library by eXtreme Electronics, India.
 www.eXtremeElectronics.co.in
