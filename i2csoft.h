@@ -27,7 +27,7 @@ I/O Configuration
 #define SCLPIN	PINB	// TAKE PORTB TO READ DATA
 
 #define SCL	PINB0	// PORTB.0 PIN AS SCL PIN
-#define SDA	PINB1	// PORTB.1 PIN AS SDA PIN
+#define SDA	PINB2	// PORTB.2 PIN AS SDA PIN
 
 #define SOFT_I2C_SDA_LOW	SDADDR |=  (1 << SDA)
 #define SOFT_I2C_SDA_HIGH	SDADDR &= ~(1 << SDA)

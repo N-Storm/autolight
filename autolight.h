@@ -12,7 +12,7 @@
 
 // Settings. PS = proximity sensor, AL = ambient light.
 // Trigger interrupt/closed state when proximity value crosses PROX_TH
-#define PROX_TH 30
+#define PROX_TH 25
 // Set light on if CH0-CH1*2 less than that value (integer math approximation)
 #define LIGHT_TH 100
 // Delay in ms between measuring AL/PS during working state
@@ -75,7 +75,8 @@
 
 // Control register flags
 // #define PDRIVE 0 // 100mA of LED Power
-#define PDRIVE 0x80 // 25mA of LED Power
+// #define PDRIVE 0x80 // 25mA of LED Power
+#define PDRIVE 0x40 // 50mA of LED Power
 #define PDIODE 0x20 // CH1 Diode
 #define PGAIN  0x00 // 1x Prox gain
 #define AGAIN  0x01 // 8x ALS gain
@@ -104,7 +105,7 @@
  * should be able to accept +12V during programming conditions and it will provide only 
  * ~ +2.7V high output with Vcc at +3.3V. With pull-up enabled we can get ~ +3.2V output.
  */
-#define LIGHTON()  do { PORTB |= (1 << PB3);   PUEB |= (1 << PUEB3); } while (0);
-#define LIGHTOFF() do { PUEB &= ~(1 << PUEB3); PORTB &= ~(1 << PB3); } while (0);
+#define LIGHTON()  do { PORTB |= (1 << PB4); } while (0);
+#define LIGHTOFF() do { PORTB &= ~(1 << PB4); } while (0);
 
 #endif /* AUTOLIGHT_H_ */

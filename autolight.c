@@ -28,32 +28,23 @@ ISR(INT0_vect) {
 }
 
 void init() {
-	RSTFLR = 0;
+	MCUSR &= ~(1 << WDRF);
 	wdt_disable();
 	cli(); // Disable interrupts
-	CCP = 0xD8; // Magic number to enable configuration access
-	CLKMSR = 0b00; // Internal osc
+	CLKPR = 1 << CLKPCE;
+	CLKPR = (1 << CLKPS2) | (1 << CLKPS0); // prescaler 1:32
 	QNOP();
-	CCP = 0xD8;
-	CLKPSR = 0b0101; // Prescaler 1:32 = 250 kHz system clock
-	// CLKPSR = 0; // Prescaler 1:1 = 8 MHz system clock
-	ACSR |= (1 << 7); // ACD (ACD: Analog Comparator Disable = 1)
-	PRR = 0b11; // Power Reduction Register
+	ACSR |= (1 << ACD); // ACD (ACD: Analog Comparator Disable = 1)
 	sei(); // Enable interrupts
 
 	PORTB = 0;
 
-	// Turn on pull-up on interrupt pin if enabled in config.
-	#ifdef INT_PULLUP
-		PUEB = (1 << PUEB2);
-	#endif
-
-	DDRB |= (1 << DDB3); // PB3 - OUTPUT LOW
+	DDRB |= (1 << DDB4); // PB3 - OUTPUT LOW
 
 	// PCICR = (1 << PCIE0); // Enable port change interrupt
 	// PCMSK = (1 << PCINT0) | (1 << PCINT1); // Enable interrupt on PB0, PB1 change
-	EICRA |= (1 << ISC01) | (0 << ISC00); // The falling edge of INT0 generates an interrupt request.
-	EIMSK |= (1 << INT0); // Enable INT0
+	MCUCR |= (0 << ISC01) | (0 << ISC00); // The falling edge of INT0 generates an interrupt request.
+	GIMSK |= (1 << INT0); // Enable INT0
 
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN);
 }
