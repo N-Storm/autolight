@@ -40,7 +40,9 @@ Please be aware that the APDS-9930 module requires 2.5 – 3.6 V for it’s oper
 
 Schematics & board are available on EasyEDA: https://easyeda.com/NStorm/autolight-board
 
-### :warning: This board has two places for LDOs - U3 & U4. Solder only one of them! They replace each other. The board are made so they could replace each other. Alternatively edit board/schematics to replace them with your favorite LDO. :warning:
+### :warning: This board has two places for LDOs - U3 & U4. Solder only one of them! :warning:
+
+They replace each other. The board are made so they could replace each other. Alternatively edit board/schematics to replace them with your favorite LDO. 
 
 This project utilizes software I2C library by eXtreme Electronics, India.
 www.eXtremeElectronics.co.in
