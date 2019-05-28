@@ -3,8 +3,8 @@
 # License: Apache License Version 2.0, January 2004 http://www.apache.org/licenses/
 # https://github.com/N-Storm/autolight
 
-DEVICE     = attiny10
-F_CPU      = 250000
+DEVICE     = attiny13
+F_CPU      = 300000
 PROGRAMMER = -c usbasp -P /dev/ttyUSB* -b 115200 
 OBJECTS    = autolight.o i2csoft.o
 
