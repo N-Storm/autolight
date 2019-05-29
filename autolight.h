@@ -107,4 +107,5 @@
 #define LIGHTON()  do { PORTB |= (1 << PB3);   PUEB |= (1 << PUEB3); } while (0);
 #define LIGHTOFF() do { PUEB &= ~(1 << PUEB3); PORTB &= ~(1 << PB3); } while (0);
 
+#define CCP_MAGIC 0xD8 // Magic number to enable configuration access
 #endif /* AUTOLIGHT_H_ */
