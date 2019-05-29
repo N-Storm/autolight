@@ -31,14 +31,13 @@ void init() {
 	RSTFLR = 0;
 	wdt_disable();
 	cli(); // Disable interrupts
-	CCP = 0xD8; // Magic number to enable configuration access
+	CCP = CCP_MAGIC; // Magic number to enable configuration access
 	CLKMSR = 0b00; // Internal osc
 	QNOP();
-	CCP = 0xD8;
-	CLKPSR = 0b0101; // Prescaler 1:32 = 250 kHz system clock
-	// CLKPSR = 0; // Prescaler 1:1 = 8 MHz system clock
-	ACSR |= (1 << 7); // ACD (ACD: Analog Comparator Disable = 1)
-	PRR = 0b11; // Power Reduction Register
+	CCP = CCP_MAGIC;
+	CLKPSR = (1 << CLKPS2) | (1 << CLKPS0); // Prescaler 1:32 = 250 kHz system clock
+	ACSR |= (1 << ACD); // ACD (ACD: Analog Comparator Disable = 1)
+	PRR = (1 << PRADC) | (1 << PRTIM0); // Power Reduction Register
 	sei(); // Enable interrupts
 
 	PORTB = 0;
@@ -50,8 +49,6 @@ void init() {
 
 	DDRB |= (1 << DDB3); // PB3 - OUTPUT LOW
 
-	// PCICR = (1 << PCIE0); // Enable port change interrupt
-	// PCMSK = (1 << PCINT0) | (1 << PCINT1); // Enable interrupt on PB0, PB1 change
 	EICRA |= (1 << ISC01) | (0 << ISC00); // The falling edge of INT0 generates an interrupt request.
 	EIMSK |= (1 << INT0); // Enable INT0
 
