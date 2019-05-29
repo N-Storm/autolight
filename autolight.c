@@ -32,14 +32,14 @@ void init() {
 	wdt_disable();
 	cli(); // Disable interrupts
 	CLKPR = 1 << CLKPCE;
-	CLKPR = (1 << CLKPS2) | (1 << CLKPS0); // prescaler 1:32
+	CLKPR = (1 << CLKPS2) | (1 << CLKPS0); // Prescaler 1:32 (300 kHz Fclk)
 	QNOP();
 	ACSR |= (1 << ACD); // ACD (ACD: Analog Comparator Disable = 1)
 	sei(); // Enable interrupts
 
 	PORTB = 0;
 
-	DDRB |= (1 << DDB4); // PB3 - OUTPUT LOW
+	DDRB |= (1 << DDB4); // PB4 - OUTPUT LOW
 
 	// PCICR = (1 << PCIE0); // Enable port change interrupt
 	// PCMSK = (1 << PCINT0) | (1 << PCINT1); // Enable interrupt on PB0, PB1 change
