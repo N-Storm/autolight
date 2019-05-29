@@ -12,7 +12,7 @@
 
 // Settings. PS = proximity sensor, AL = ambient light.
 // Trigger interrupt/closed state when proximity value crosses PROX_TH
-#define PROX_TH 30
+#define PROX_TH 25
 // Set light on if CH0-CH1*2 less than that value (integer math approximation)
 #define LIGHT_TH 100
 // Delay in ms between measuring AL/PS during working state
@@ -75,7 +75,8 @@
 
 // Control register flags
 // #define PDRIVE 0 // 100mA of LED Power
-#define PDRIVE 0x80 // 25mA of LED Power
+// #define PDRIVE 0x80 // 25mA of LED Power
+#define PDRIVE 0x40 // 50mA of LED Power
 #define PDIODE 0x20 // CH1 Diode
 #define PGAIN  0x00 // 1x Prox gain
 #define AGAIN  0x01 // 8x ALS gain
