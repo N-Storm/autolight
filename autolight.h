@@ -30,8 +30,8 @@
 #define WTIME_DEFAULT 0xB6
 // PS Pulse count
 #define PPULSE_DEFAULT 4
-// PPERS = 3 consecutive PS values out of range
-#define PERS_CON 0b00110000
+// PERS register, PPERS (high 4 bits) = 3 consecutive PS values out of range, APERS = 0 (low 4 bits)
+#define PERS_DEFAULT (3 << 4)
 // ALS Timing recommended ~50ms value, 19 cyc, 51.87ms
 #define ATIME_DEFAULT 0xED
 // PS Timing, recommended to be set to 0xFF (1 cyc, 10 bits)

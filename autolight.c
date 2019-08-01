@@ -175,7 +175,7 @@ bool apds_init() {
 	apds_writebyte(APDS_PIHTL, 0); // Write zero to disable high threshold
 	apds_writebyte(APDS_PIHTH, 0);
 	apds_writebyte(APDS_CONFIG, 0); // Reset to default
-	apds_writebyte(APDS_PERS, PERS_CON);
+	apds_writebyte(APDS_PERS, PERS_DEFAULT);
 	apds_writebyte(APDS_ENABLE, WEN | PEN | PON);
 
 	return true;
