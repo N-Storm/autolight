@@ -15,7 +15,7 @@ OBJECTS    = autolight.o i2csoft.o
 
 CC = avr-gcc
 SIZE = avr-size
-CFLAGS = -Os -std=gnu11 -flto -Wall
+CFLAGS = -Os -std=gnu11 -flto -Wall -Wl,--warn-common
 AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE) -v
 COMPILE = $(CC) $(CFLAGS) -DF_CPU=$(F_CPU) -mmcu=$(DEVICE)
 
