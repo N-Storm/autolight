@@ -30,8 +30,8 @@ Alternatively you can use pre-built binaries with the default settings from [rel
 
 ## Connecting
 
-PB0 ↔ SCL<br />
-PB1 ↔ SDA<br />
+PB0 ↔ SDA<br />
+PB1 ↔ SCL<br />
 PB2 ↔ INT<br />
 
 PB3 are the module digital output, with logic LOW when light should be turned off and HIGH when it should be on. Suited for connecting to an N-channel FET driving the LED light.
