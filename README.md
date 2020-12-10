@@ -5,6 +5,8 @@ https://github.com/N-Storm/autolight
 
 https://easyeda.com/NStorm/autolight-board
 
+<a href="https://PCBs.io/share/rYlpv"><img src="https://s3.amazonaws.com/pcbs.io/share.png" alt="Order from PCBs.io"></img></a>
+
 This project utilizes small ATtiny10 mcu to work with APDS-9930 ambient light (AL) and proximity I2C sensor.
 This is used for automatic "smart" light in a drawer. Once the drawer are open the APDS-9930 will notice proximity change 
 and trigger a preset interrupt and MCU will come from sleep to check if AL level are below set (i.e. it's dark around).
