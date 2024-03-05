@@ -1,7 +1,7 @@
 # Auto light
 Attiny10 &amp; APDS-9930 based automatic light/switch
 
-https://github.com/N-Storm/autolight
+https://github.com/N-Storm/autolight [![Makefile CI](https://github.com/N-Storm/autolight/actions/workflows/makefile.yml/badge.svg?branch=master)](https://github.com/N-Storm/autolight/actions/workflows/makefile.yml)
 
 https://easyeda.com/NStorm/autolight-board
 
