@@ -20,8 +20,8 @@ jobs:
     - name: build project
       run: make
 
-    - name: make debug
-      run: make debug
+    #- name: make debug
+    #  run: make debug
 
     - name: make disasm
       run: make disasm
